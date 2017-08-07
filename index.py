@@ -51,6 +51,7 @@ class Ui_IndexWindow(object):
         self.fileRadio.setObjectName("fileRadio")
         self.originPathEdit = QtWidgets.QLineEdit(self.centralwidget)
         self.originPathEdit.setGeometry(QtCore.QRect(180, 160, 540, 40))
+        self.originPathEdit.setReadOnly(True)
         self.originPathEdit.setObjectName("originPathEdit")
         self.destPathEdit = QtWidgets.QLineEdit(self.centralwidget)
         self.destPathEdit.setGeometry(QtCore.QRect(180, 220, 580, 40))

@@ -91,21 +91,28 @@ class mywindow(QtWidgets.QMainWindow,Ui_IndexWindow):
         progress = 0
         for root, dirs, files in os.walk(originPath):
             for name in files:
+                # originPath->C:/User/xxx/Desktop/ttt
+                # pos       ->                   ↑
+                # origin    ->C:/User/xxx/Desktop/ttt/bb/cc
+                # destPath  ->res/image/
+                # relPath   ->ttt/bb/cc/
+                # absPath   ->C:/User/xxx/Desktop/ttt/bb/cc/abc.jpg
+                # key       ->res/image/ttt/bbb/cc/abc.jpg
                 origin = root.replace("\\","/")
-                origin = origin+'/'+name
+                # 找到最后一个'/'出现的地方
                 pos = originPath.rfind("/")
-                key = destPath + originPath[pos+1:] + "/" + name
-                # print(origin)
-                # print(key)
-                self.fileSignal.emit("上传文件:" + origin)
+                relPath = origin[pos+1:]+"/"
+                absPath = origin + "/" + name
+                key = destPath + relPath + name
+                self.fileSignal.emit("上传文件:" + absPath)
                 self.fileSignal.emit("访问路径:" + key)
-                ret, _ = self.upload.putFile(origin, key)
+                ret, _ = self.upload.putFile(absPath, key)
                 if ret['key'] == '':
                     self.fileSignal.emit("上传失败！")
                 else:
                     self.fileSignal.emit("上传成功！")
                 progress += 1
-                self.progressSignal.emit(progress,totalNum)
+                self.progressSignal.emit(progress, totalNum)
 
     def submit(self):
         # 清空进度条和消息框
