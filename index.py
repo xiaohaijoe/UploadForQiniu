@@ -64,6 +64,9 @@ class Ui_IndexWindow(object):
         self.urlEdit.setGeometry(QtCore.QRect(180, 280, 580, 40))
         self.urlEdit.setReadOnly(True)
         self.urlEdit.setObjectName("urlEdit")
+        self.putUnityBtn = QtWidgets.QPushButton(self.centralwidget)
+        self.putUnityBtn.setGeometry(QtCore.QRect(510, 560, 120, 40))
+        self.putUnityBtn.setObjectName("putUnityBtn")
         IndexWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(IndexWindow)
         self.statusbar.setObjectName("statusbar")
@@ -85,4 +88,5 @@ class Ui_IndexWindow(object):
         self.dirRadio.setText(_translate("IndexWindow", "文件夹"))
         self.fileRadio.setText(_translate("IndexWindow", "文件"))
         self.label_5.setText(_translate("IndexWindow", "访问Url"))
+        self.putUnityBtn.setText(_translate("IndexWindow", "Unity热更新上传"))
 
