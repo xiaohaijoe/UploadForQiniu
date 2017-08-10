@@ -6,6 +6,7 @@ from upload import Upload
 from urllib import request
 import os
 import _thread
+import time
 
 class mywindow(QtWidgets.QMainWindow,Ui_IndexWindow):
     upload = 0
@@ -77,12 +78,20 @@ class mywindow(QtWidgets.QMainWindow,Ui_IndexWindow):
         originPath = self.originPathEdit.text()
         # 获取保存路径
         destPath = self.destPathEdit.text()
-        pos = originPath.rfind("/")
+        lastPos = destPath.rfind("/")
         # 判断保存最后一位是否为"/"
-        if pos == len(originPath)-1:
+        if lastPos == len(destPath)-1:
+            # originPath    -> C:/User/xxx/Desktop/abcd.jpg
+            # destPath      -> res/image/
+            # key           -> res/image/abcd.jpg
+            # filename      -> abcd.jpg
+            filename = originPath[originPath.rfind("/")+1:]
             # 如果最后一位是"/"，则不需要修改上传文件名
-            key = destPath + originPath[pos+1:]
+            key = destPath + filename
         else:
+            # originPath    -> C:/User/xxx/Desktop/abcd.jpg
+            # destPath      -> res/image/bbb.png
+            # key           -> res/image/bbb.png
             # 如果最后一位不是"/"，则修改上传文件名
             key = destPath
         self.fileSignal.emit("上传文件:" + originPath)
@@ -95,7 +104,7 @@ class mywindow(QtWidgets.QMainWindow,Ui_IndexWindow):
             self.fileSignal.emit("上传失败！")
         else:
             self.fileSignal.emit("上传成功！")
-        self.progressSignal.emit(1,1)
+        self.progressSignal.emit(1, 1)
 
     def putDir(self):
         # 设置当前bucketName
@@ -171,8 +180,8 @@ class mywindow(QtWidgets.QMainWindow,Ui_IndexWindow):
                 if item["bucket"] == bucketName:
                     domain = item["domain"]
                     break
-            fileTxtUrl = domain + destTxtRelPath;
-            self.fileSignal.emit("读取文件:"+ fileTxtUrl)
+            fileTxtUrl = domain + destTxtRelPath + "?t=" + str(int(time.time()))
+            self.fileSignal.emit("读取文件:" + fileTxtUrl)
             try:
                 file = request.urlopen(fileTxtUrl)
             except:
