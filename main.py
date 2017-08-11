@@ -56,8 +56,30 @@ class mywindow(QtWidgets.QMainWindow,Ui_IndexWindow):
     def resetUrl(self):
         originPath = self.originPathEdit.text()
         destPath = self.destPathEdit.text()
-        pos = originPath.rfind("/")
-        url = 'http://xxx.cn/'+destPath+originPath[pos+1:]
+        originPos = originPath.rfind("/")
+        destPos = destPath.rfind("/")
+        if self.dirRadio.isChecked():
+            # ---------------------上传文件夹时----------------
+            # originPath    -> C:/Users/xxx/Desktop/ttt
+            # destPath      -> res/image/
+            # url           -> http://xxx.cn/res/image/ttt
+            # ------------------------------------------------
+            url = 'http://xxx.cn/' + destPath + originPath[originPos + 1:]
+        else:
+            if destPos == len(destPath)-1 :
+                # ---------------------上传文件时1----------------
+                # originPath    -> C:/Users/xxx/Desktop/ttt/abc.jpg
+                # destPath      -> res/image/
+                # url           -> http://xxx.cn/res/image/abc.jpg
+                # ------------------------------------------------
+                url = 'http://xxx.cn/' + destPath + originPath[originPos + 1:]
+            else:
+                # ---------------------上传文件时2----------------
+                # originPath    -> C:/Users/xxx/Desktop/ttt/abc.jpg
+                # destPath      -> res/image/ccc.jpg
+                # url           -> http://xxx.cn/res/image/ccc.jpg
+                # ------------------------------------------------
+                url = 'http://xxx.cn/' + destPath
         self.urlEdit.setText(url)
 
     # 打印上传数据
